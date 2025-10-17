@@ -1,4 +1,5 @@
 import * as React from "react"
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import {
   closestCenter,
   DndContext,
@@ -144,14 +145,23 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     id: "select",
     header: ({ table }) => (
       <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
+     <Checkbox
+  checked={
+    ((): CheckedState => (
+      table.getIsAllPageRowsSelected()
+        ? true
+        : table.getIsSomePageRowsSelected()
+        ? "indeterminate"
+        : false // <- aquí estaba el '' que rompe
+    ))()
+  }
+  onCheckedChange={(value) => {
+    // value es CheckedState -> normalizamos a boolean
+    const next = value === "indeterminate" ? true : !!value;
+    table.toggleAllPageRowsSelected(next);
+  }}
+  aria-label="Select all"
+/>
       </div>
     ),
     cell: ({ row }) => (
