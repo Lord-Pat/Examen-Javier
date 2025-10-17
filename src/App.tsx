@@ -1,29 +1,59 @@
-import LiquidEther from './components/LiquidEther';
-import index from './index.css'
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { ChartArea } from "lucide-react"
+import { ChartAreaDefault } from "./components/chart-area-default"
+import { ChartBarInteractive } from "./components/chart-bar-interactive"
+import { ChartLineDots } from "./components/chart-line-dots"
+import { ChartBarDefault } from "./components/chart-bar-default"
 
-function App(){
- 
- return(
-  <div style={{ width: '100%', height: 920, position: 'relative'}}>
-  <LiquidEther
-    colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
-    mouseForce={20}
-    cursorSize={100}
-    isViscous={false}
-    viscous={30}
-    iterationsViscous={32}
-    iterationsPoisson={32}
-    resolution={0.5}
-    isBounce={false}
-    autoDemo={true}
-    autoSpeed={0.5}
-    autoIntensity={2.2}
-    takeoverDuration={0.25}
-    autoResumeDelay={3000}
-    autoRampDuration={0.6}
-  />
-</div>
- )
+
+export default function Page() {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">
+                  Building Your Application
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <ChartAreaDefault />
+            <ChartBarDefault />
+            <ChartLineDots />
+          </div>
+          <ChartBarInteractive />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }
-
-export default App
